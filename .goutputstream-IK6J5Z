@@ -14,7 +14,7 @@ Install
 Usage
 -----
 
-All `API`_ features are implemented.
+All `API` features are implemented.
 
 **Retrieve account info**
 
