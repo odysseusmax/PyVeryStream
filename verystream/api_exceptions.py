@@ -1,16 +1,11 @@
 class BadRequestException(Exception):
     pass
 
-
 class PermissionDeniedException(Exception):
     pass
 
 
 class FileNotFoundException(Exception):
-    pass
-
-
-class TooManyRequestsException(Exception):
     pass
 
 

@@ -3,31 +3,29 @@ from __future__ import absolute_import
 import os
 
 import requests
-import requests_toolbelt
+#~ import requests_toolbelt
 
-from .api_exceptions import (BadRequestException, BandwidthUsageExceeded, FileNotFoundException,
-                             PermissionDeniedException, TooManyRequestsException, ServerErrorException,
-                             UnavailableForLegalReasonsException)
+from .api_exceptions import *
 
 
-class OpenLoad(object):
-    api_base_url = 'https://api.openload.co/{api_version}/'
-    api_version = '1'
+class Verystream(object):
+    api_base_url = 'https://api.verystream.com/'
 
-    def __init__(self, api_login, api_key):
-        """Initializes OpenLoad instance with given parameters and formats api base url.
+    def __init__(self, api_login, api_key, timeout=30.0):
+        """Initializes Verystream instance with given parameters and formats api base url.
 
         Args:
-            api_login (str): API Login found in openload.co
-            api_key (str): API Key found in openload.co
+            api_login (str): API Login found in verystream.com
+            api_key (str): API Key found in verystream.com
 
         Returns:
             None
 
         """
+        self.timeout = timeout
         self.login = api_login
         self.key = api_key
-        self.api_url = self.api_base_url.format(api_version=self.api_version)
+        self.api_url = self.api_base_url
 
     @classmethod
     def _check_status(cls, response_json):
@@ -49,8 +47,6 @@ class OpenLoad(object):
             raise PermissionDeniedException(msg)
         elif status == 404:
             raise FileNotFoundException(msg)
-        elif status == 429:
-            raise TooManyRequestsException(msg)
         elif status == 451:
             raise UnavailableForLegalReasonsException(msg)
         elif status == 509:
@@ -89,7 +85,7 @@ class OpenLoad(object):
 
         params.update({'login': self.login, 'key': self.key})
 
-        response_json = requests.get(self.api_url + url, params).json()
+        response_json = requests.get(self.api_url + url, params, timeout=self.timeout).json()
 
         return self._process_response(response_json)
 
@@ -218,7 +214,7 @@ class OpenLoad(object):
             dict: dictionary containing (url: will be used in actual upload, valid_until). ::
 
                 {
-                    "url": "https://1fiafqj.oloadcdn.net/uls/nZ8H3X9e0AotInbU",
+                    "url": "https://doge.example.com/uls/fCgaPthr_ys",
                     "valid_until": "2017-08-19 19:06:46"
                 }
 
@@ -261,9 +257,9 @@ class OpenLoad(object):
         _, file_name = os.path.split(file_path)
 
         with open(file_path, 'rb') as f:
-            data = requests_toolbelt.MultipartEncoder({
-                "files": (file_name, f, "application/octet-stream"),
-            })
+            #~ data = requests_toolbelt.MultipartEncoder({
+                #~ "files": (file_name, f, "application/octet-stream"),
+            #~ })
 
             headers = {"Content-Type": data.content_type}
             response_json = requests.post(upload_url, data=data, headers=headers).json()
@@ -272,7 +268,7 @@ class OpenLoad(object):
         return response_json['result']
 
     def remote_upload(self, remote_url, folder_id=None, headers=None):
-        """Used to make a remote file upload to openload.co
+        """Used to make a remote file upload to verystream.com
 
         Note:
             If folder_id is not provided, the file will be uploaded to ``Home`` folder.
@@ -389,6 +385,25 @@ class OpenLoad(object):
 
         return self._get('file/listfolder', params=params)
 
+    def create_folder(self, name, parent):
+        """Creates a new Folder
+
+        Args:
+            name (str): Name of new Folder.
+            parent (str): Parent Folder ID (if not set root folder will be used).
+
+        Returns:
+            {
+                "status": 200,
+                "msg": "OK",
+                "result": {
+                    "folderid": 35678
+                }
+            }
+
+        """
+        return self._get('file/createfolder', params={'name': name, 'pid': parent})
+
     def rename_folder(self, folder_id, name):
         """Sets a new name for a folders
 
@@ -404,6 +419,22 @@ class OpenLoad(object):
 
         """
         return self._get('file/renamefolder', params={'folder': folder_id, 'name': name})
+
+    def delete_folder(self,folder):
+        """Deletes a Folder with all subfolders and all files in it. Be careful!
+
+        Args:
+            folder (str): Folder ID to delete.
+
+        Returns:
+            {
+                "status": 200,
+                "msg": "OK",
+                "result": true
+            }
+
+        """
+        return self._get('file/deletefolder', params={'folder': folder})
 
     def rename_file(self, file_id, name):
         """Sets a new name for a file
@@ -429,18 +460,6 @@ class OpenLoad(object):
 
         """
         return self._get('file/delete', params={'file': file_id})
-
-    def convert_file(self, file_id):
-        """Converts previously uploaded files to a browser-streamable format (mp4 / h.264).
-
-        Args:
-            file_id (str): id of the file to be converted.
-
-        Returns:
-            bool: True if conversion started, otherwise False.
-
-        """
-        return self._get('file/convert', params={'file': file_id})
 
     def running_conversions(self, folder_id=None):
         """Shows running file converts by folder
@@ -472,15 +491,6 @@ class OpenLoad(object):
         params = {'folder': folder_id} if folder_id else {}
         return self._get('file/runningconverts', params=params)
 
-    def failed_conversions(self):
-        """
-        Not yet implemented, openload.co said "Coming soon ...".
-
-        Raises:
-            NotImplementedError
-
-        """
-        raise NotImplementedError
 
     def splash_image(self, file_id):
         """Shows the video splash image (thumbnail)

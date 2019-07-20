@@ -10,7 +10,7 @@ with copen(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='pyverystream',
-    version='0.1.1',
+    version='0.7',
     description='Python wrapper for verystream.com API',
     long_description=long_description,
     url='https://github.com/odysseusmax/PyVeryStream',
@@ -18,7 +18,7 @@ setup(
     author_email='royschristy@gmail.com',
     license='MIT',
     classifiers=[
-        'Development Status :: 1 - Beta',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Internet :: WWW/HTTP',
         'License :: OSI Approved :: MIT License',
