@@ -58,3 +58,8 @@ Documentation
 -------------
 
 documentation is not available currently
+
+Note
+-------------
+
+Forked from PyOpenLoad and adapted to work with verystream.com/api
