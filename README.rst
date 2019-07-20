@@ -1,4 +1,4 @@
-PyOpenload
+PyVeryStream
 =======================
 
 python wrapper for `verystream.com` `API`.
