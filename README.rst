@@ -1,7 +1,7 @@
 PyVeryStream
 =======================
 
-python wrapper for `verystream.com` `API`.
+Python wrapper for [verystream.com API](https://api.verystream.com/ "Verystream API")
 
 Install
 -------
@@ -57,9 +57,9 @@ All `API` features are implemented.
 Documentation
 -------------
 
-documentation is not available currently
+Documentation is not available currently.
 
 Note
 -------------
 
-Forked from PyOpenLoad and adapted to work with verystream.com/api
+Forked from [PyOpenLoad](https://github.com/mohan3d/PyOpenload) and adapted to work with Verystream API
