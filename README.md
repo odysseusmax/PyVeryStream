@@ -1,24 +1,22 @@
-PyVeryStream
-=======================
+# PyVeryStream
 
 Python wrapper for [verystream.com API](https://api.verystream.com/ "Verystream API")
 
-Install
--------
+## Install
 
 .. code-block:: bash
 
     $ pip install git+https://github.com/odysseusmax/PyVeryStream.git
 
 
-Usage
------
+## Usage
+
 
 All `API` features are implemented.
 
 **Retrieve account info**
 
-.. code:: python
+``` python
 
     from verystream import Verystream
 
@@ -26,11 +24,12 @@ All `API` features are implemented.
 
     account_info = vs.account_info()
     print(account_info)
+```
 
 
 **Upload file**
 
-.. code:: python
+``` python
 
     from verystream import Verystream
 
@@ -38,11 +37,12 @@ All `API` features are implemented.
 
     uploaded_file_info = vs.upload_file('/home/username/file.txt')
     print(uploaded_file_info)
+ ```
 
 
 **Retrieve file info**
 
-.. code:: python
+``` python
 
     from verystream import Verystream
 
@@ -53,13 +53,14 @@ All `API` features are implemented.
 
     file_info = vs.file_info(file_id)
     print(file_info)
+```
 
-Documentation
--------------
+## Documentation
+
 
 Documentation is not available currently.
 
-Note
--------------
+## Note
+
 
 Forked from [PyOpenLoad](https://github.com/mohan3d/PyOpenload) and adapted to work with Verystream API
