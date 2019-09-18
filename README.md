@@ -4,9 +4,10 @@ Python wrapper for [verystream.com API](https://api.verystream.com/ "Verystream 
 
 ## Install
 
-.. code-block:: bash
+``` bash
 
     $ pip install git+https://github.com/odysseusmax/PyVeryStream.git
+```
 
 
 ## Usage
