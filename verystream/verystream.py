@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import os
 
 import requests
-#~ import requests_toolbelt
+import requests_toolbelt
 
 from .api_exceptions import *
 
@@ -257,9 +257,9 @@ class Verystream(object):
         _, file_name = os.path.split(file_path)
 
         with open(file_path, 'rb') as f:
-            #~ data = requests_toolbelt.MultipartEncoder({
-                #~ "files": (file_name, f, "application/octet-stream"),
-            #~ })
+            data = requests_toolbelt.MultipartEncoder({
+                "files": (file_name, f, "application/octet-stream"),
+            })
 
             headers = {"Content-Type": data.content_type}
             response_json = requests.post(upload_url, data=data, headers=headers).json()
